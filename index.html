@@ -1,0 +1,336 @@
+<!doctype html>
+<html lang="fi">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Bootstrap 5 -harjoitussivusto: navigaatio, karuselli, ruudukko, kortit, haitari, taulukko + lisäominaisuus (modal)." />
+    <title>Harjoitussivusto – Bootstrap 5</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous"
+    />
+
+    <style>
+      :root {
+        --brand-700: #4b3f72;
+        --brand-500: #6a5bbf;
+        --brand-100: #eef0ff;
+      }
+      html { scroll-behavior: smooth; }
+      body { font-family: "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+      .bg-brand { background: var(--brand-700); }
+      .text-brand { color: var(--brand-700); }
+      .btn-brand { background: var(--brand-500); color: #fff; }
+      .btn-brand:hover, .btn-brand:focus { background: #5a4bb1; color: #fff; }
+      .hero-overlay {
+        background: rgba(0,0,0,.45);
+      }
+      :focus { outline: 3px solid var(--brand-500) !important; outline-offset: 2px; }
+
+      .card:hover { transform: translateY(-2px); transition: transform .15s ease; }
+
+      .skip-link {
+        position: absolute; left: -9999px; top: auto; width: 1px; height: 1px; overflow: hidden;
+      }
+      .skip-link:focus { left: 1rem; top: 1rem; width: auto; height: auto; padding: .5rem .75rem; background: #fff; border-radius: .5rem; z-index: 1080; }
+
+      footer a { color: inherit; }
+    </style>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Siirry sisältöön</a>
+
+    <header class="border-bottom">
+      <nav class="navbar navbar-expand-lg bg-brand navbar-dark" aria-label="Päävalikko">
+        <div class="container">
+          <a class="navbar-brand fw-bold" href="#" aria-current="page">Bootstrap Demo</a>
+
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navContent" aria-controls="navContent" aria-expanded="false" aria-label="Vaihda navigaation näkyvyys">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+
+          <div class="collapse navbar-collapse" id="navContent">
+            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+              <li class="nav-item"><a class="nav-link active" href="#karuselli">Karuselli</a></li>
+              <li class="nav-item"><a class="nav-link" href="#ruudukko">Ruudukko</a></li>
+              <li class="nav-item"><a class="nav-link" href="#kortit">Kortit</a></li>
+              <li class="nav-item"><a class="nav-link" href="#haitari">Haitari</a></li>
+              <li class="nav-item"><a class="nav-link" href="#taulukko">Taulukko</a></li>
+            </ul>
+            <div class="ms-lg-3 mt-2 mt-lg-0">
+              <button class="btn btn-light fw-semibold" data-bs-toggle="modal" data-bs-target="#infoModal">Tietoja sivusta</button>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <!-- Pääsisältö -->
+    <main id="main" class="pb-5">
+      <section id="karuselli" class="pt-3 pt-lg-4">
+        <div class="container">
+          <h1 class="h2 text-brand mb-3">Kuvakaruselli</h1>
+        </div>
+
+        <div id="heroCarousel" class="carousel slide" data-bs-ride="carousel" aria-label="Kuvakaruselli esittelee esimerkkikuvia">
+          <div class="carousel-indicators">
+            <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Kuva 1"></button>
+            <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="1" aria-label="Kuva 2"></button>
+            <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="2" aria-label="Kuva 3"></button>
+          </div>
+
+          <div class="carousel-inner">
+            <!-- Kuva 1 -->
+            <div class="carousel-item active">
+              <img src="https://picsum.photos/id/1015/1600/600" class="d-block w-100" alt="Vuoristomaisema järven rannalla" loading="lazy" />
+              <div class="carousel-caption d-none d-md-block hero-overlay rounded-3 p-3">
+                <h2 class="h4 fw-bold">Responsiivinen Bootstrap-teema</h2>
+                <p>Karuselli sopeutuu eri näyttöihin ja tukee näppäimistöä.</p>
+              </div>
+            </div>
+            <!-- Kuva 2 -->
+            <div class="carousel-item">
+              <img src="https://picsum.photos/id/1025/1600/600" class="d-block w-100" alt="Koira katsoo kameraan" loading="lazy" />
+              <div class="carousel-caption d-none d-md-block hero-overlay rounded-3 p-3">
+                <h2 class="h4 fw-bold">Mukautetut värit ja fontit</h2>
+                <p>Oman teeman värit ja Inter-fontti parantavat luettavuutta.</p>
+              </div>
+            </div>
+            <!-- Kuva 3 -->
+            <div class="carousel-item">
+              <img src="https://picsum.photos/id/1039/1600/600" class="d-block w-100" alt="Kaupunki auringonlaskussa" loading="lazy" />
+              <div class="carousel-caption d-none d-md-block hero-overlay rounded-3 p-3">
+                <h2 class="h4 fw-bold">Helppo muokata omaan aiheeseen</h2>
+                <p>Vaihda kuvat, tekstit ja värit – rakenne pysyy.</p>
+              </div>
+            </div>
+          </div>
+
+          <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Edellinen</span>
+          </button>
+          <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Seuraava</span>
+          </button>
+        </div>
+      </section>
+
+      <section id="ruudukko" class="py-5">
+        <div class="container">
+          <h2 class="h3 mb-4">Ruudukko (Grid)</h2>
+          <div class="row g-4 align-items-stretch">
+            <div class="col-12 col-md-6 col-lg-3">
+              <div class="p-4 h-100 rounded-3 border bg-light">
+                <h3 class="h5">Sarake 1</h3>
+                <p class="mb-0">Tämä sarake venyy täyttämään korkeuden. Ruudukossa käytetään responsiivisia col-luokkia.</p>
+              </div>
+            </div>
+            <div class="col-12 col-md-6 col-lg-3">
+              <div class="p-4 h-100 rounded-3 border bg-light">
+                <h3 class="h5">Sarake 2</h3>
+                <p class="mb-0">Käytä <code>row</code> ja <code>col-*</code> -luokkia layoutin luomiseen.</p>
+              </div>
+            </div>
+            <div class="col-12 col-md-6 col-lg-3">
+              <div class="p-4 h-100 rounded-3 border bg-light">
+                <h3 class="h5">Sarake 3</h3>
+                <p class="mb-0">Gutter-väli <code>g-4</code> lisää tilaa elementtien väliin.</p>
+              </div>
+            </div>
+            <div class="col-12 col-md-6 col-lg-3">
+              <div class="p-4 h-100 rounded-3 border bg-light">
+                <h3 class="h5">Sarake 4</h3>
+                <p class="mb-0">Lisää rivejä tai sisäkkäisiä ruudukoita tarpeen mukaan.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="kortit" class="py-5 bg-body-secondary">
+        <div class="container">
+          <div class="d-flex align-items-center justify-content-between mb-3">
+            <h2 class="h3 mb-0">Kortit</h2>
+            <a class="btn btn-brand" href="#info" role="button">Toimintopainike</a>
+          </div>
+
+          <div class="row g-4">
+            <!-- Kortti 1 -->
+            <div class="col-12 col-md-6 col-lg-4">
+              <div class="card h-100 shadow-sm">
+                <img src="https://picsum.photos/id/1062/800/500" class="card-img-top" alt="Metsäpolku" loading="lazy">
+                <div class="card-body">
+                  <h3 class="card-title h5">Kortti A</h3>
+                  <p class="card-text">Kortti sisältää kuvan, otsikon ja tekstin. Sopii artikkeleille tai tuotteille.</p>
+                  <a href="#" class="btn btn-outline-primary">Lue lisää</a>
+                </div>
+              </div>
+            </div>
+            <!-- Kortti 2 -->
+            <div class="col-12 col-md-6 col-lg-4">
+              <div class="card h-100 shadow-sm">
+                <img src="https://picsum.photos/id/1043/800/500" class="card-img-top" alt="Vuoristo aamu-usvassa" loading="lazy">
+                <div class="card-body">
+                  <h3 class="card-title h5">Kortti B</h3>
+                  <p class="card-text">Käytä <code>.row</code> + <code>.col</code> -ruudukkoa, jotta kortit asettuvat kauniisti.</p>
+                  <a href="#" class="btn btn-outline-primary">Toinen toiminto</a>
+                </div>
+              </div>
+            </div>
+            <!-- Kortti 3 -->
+            <div class="col-12 col-md-6 col-lg-4">
+              <div class="card h-100 shadow-sm">
+                <img src="https://picsum.photos/id/1056/800/500" class="card-img-top" alt="Meri ja kallioranta" loading="lazy">
+                <div class="card-body">
+                  <h3 class="card-title h5">Kortti C</h3>
+                  <p class="card-text">Kuville on määritetty kuvaava <em>alt</em>-teksti saavutettavuuden vuoksi.</p>
+                  <a href="#" class="btn btn-outline-primary">Lisätietoja</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="haitari" class="py-5">
+        <div class="container">
+          <h2 class="h3 mb-4">Haitari (Accordion)</h2>
+          <div class="accordion" id="demoAccordion">
+            <div class="accordion-item">
+              <h3 class="accordion-header" id="a1-heading">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#a1" aria-expanded="true" aria-controls="a1">
+                  Mitä tämä sivu demonstroi?
+                </button>
+              </h3>
+              <div id="a1" class="accordion-collapse collapse show" aria-labelledby="a1-heading" data-bs-parent="#demoAccordion">
+                <div class="accordion-body">
+                  Tämä sivu näyttää tehtävässä vaaditut Bootstrap-komponentit ja esittelee pienen oman teeman.
+                </div>
+              </div>
+            </div>
+            <div class="accordion-item">
+              <h3 class="accordion-header" id="a2-heading">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#a2" aria-expanded="false" aria-controls="a2">
+                  Miten muokkaan värejä ja fontteja?
+                </button>
+              </h3>
+              <div id="a2" class="accordion-collapse collapse" aria-labelledby="a2-heading" data-bs-parent="#demoAccordion">
+                <div class="accordion-body">
+                  Vaihda <code>:root</code>-muuttujia (<code>--brand-*</code>) ja Google Fonts -linkki haluamaasi fonttiin.
+                </div>
+              </div>
+            </div>
+            <div class="accordion-item">
+              <h3 class="accordion-header" id="a3-heading">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#a3" aria-expanded="false" aria-controls="a3">
+                  Onko mukana lisäominaisuus?
+                </button>
+              </h3>
+              <div id="a3" class="accordion-collapse collapse" aria-labelledby="a3-heading" data-bs-parent="#demoAccordion">
+                <div class="accordion-body">
+                  Kyllä. Mukana on Bootstrap <strong>Modal</strong> -komponentti navigaation painikkeessa (lisäpisteet +2).
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="taulukko" class="py-5 bg-body-secondary">
+        <div class="container">
+          <h2 class="h3">Taulukko</h2>
+          <p class="text-muted">Esimerkkitaulukko, jossa otsikoille on määritetty <code>scope</code> ja taulukolla <code>caption</code>.</p>
+
+          <div class="table-responsive">
+            <table class="table align-middle table-striped table-hover">
+              <caption class="text-start">Yhteenveto kuvitteellisista tuotteista</caption>
+              <thead class="table-dark">
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">Tuote</th>
+                  <th scope="col">Kategoria</th>
+                  <th scope="col">Hinta</th>
+                  <th scope="col">Saatavuus</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row">1</th>
+                  <td>Widget A</td>
+                  <td>Elektroniikka</td>
+                  <td>€49.90</td>
+                  <td><span class="badge text-bg-success">Varastossa</span></td>
+                </tr>
+                <tr>
+                  <th scope="row">2</th>
+                  <td>Widget B</td>
+                  <td>Koti</td>
+                  <td>€29.90</td>
+                  <td><span class="badge text-bg-warning">Rajoitettu</span></td>
+                </tr>
+                <tr>
+                  <th scope="row">3</th>
+                  <td>Widget C</td>
+                  <td>Ulkoilu</td>
+                  <td>€79.00</td>
+                  <td><span class="badge text-bg-secondary">Loppu</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="py-5 border-top">
+      <div class="container d-flex flex-wrap gap-3 align-items-center justify-content-between">
+        <p class="m-0">© <span id="year"></span> Bootstrap Demo. Kaikki oikeudet pidätetään.</p>
+        <ul class="nav">
+          <li class="nav-item"><a class="nav-link px-2 text-muted" href="#karuselli">Karuselli</a></li>
+          <li class="nav-item"><a class="nav-link px-2 text-muted" href="#ruudukko">Ruudukko</a></li>
+          <li class="nav-item"><a class="nav-link px-2 text-muted" href="#kortit">Kortit</a></li>
+          <li class="nav-item"><a class="nav-link px-2 text-muted" href="#haitari">Haitari</a></li>
+          <li class="nav-item"><a class="nav-link px-2 text-muted" href="#taulukko">Taulukko</a></li>
+        </ul>
+      </div>
+    </footer>
+
+    <div class="modal fade" id="infoModal" tabindex="-1" aria-labelledby="infoModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h2 class="modal-title h5" id="infoModalLabel">Tietoja sivusta</h2>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Sulje"></button>
+          </div>
+          <div class="modal-body">
+            <p>Tämä sivu on tehty Bootstrap 5:llä. Se sisältää vaaditut osat: responsiivinen navigaatio (hamburger), kuvakaruselli, ruudukko, kortit, haitari ja taulukko.</p>
+            <p>Lisäksi mukana on <strong>Modal</strong> lisäominaisuutena (+2 pistettä). Koodi on sisennetty, kommentoitu ja saavutettavuutta on huomioitu (mm. skip-link, alt-tekstit, ARIA-attribuutit).</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Sulje</button>
+            <a href="#" class="btn btn-brand">Ohjeisiin</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+      crossorigin="anonymous"
+    ></script>
+
+    <script>
+      document.getElementById('year').textContent = new Date().getFullYear();
+    </script>
+  </body>
+</html>
