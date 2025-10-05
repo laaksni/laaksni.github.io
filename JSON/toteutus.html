@@ -81,7 +81,7 @@
 
   <script>
     // Haetaan tiedot palvelimelta (samasta kansiosta oleva JSON)
-    fetch('toteutus.json')
+    fetch('toteutus.JSON')
       .then(function(response){ return response.json(); })
       .then(function(data){ kerro(data); })
       .catch(function(){ document.getElementById('vastaus').innerHTML = '<p>Tietoa ei pystytä hakemaan</p>'; });
