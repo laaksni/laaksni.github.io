@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="fi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>JSON Tehtävä — Etusivu</title>
+
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --tausta: #f5f7ff;
+      --teksti: #0f172a;
+      --korostus: #7c3aed;
+      --korostus-2: #06b6d4;
+      --kortti: #ffffff;
+      --reuna: #e5e7eb;
+    }
+
+    * { box-sizing: border-box; }
+    body{
+      margin: 0;
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      background: var(--tausta);
+      color: var(--teksti);
+      line-height: 1.6;
+    }
+
+    header{
+      position: sticky;
+      top: 0;
+      background: #ffffffcc;
+      backdrop-filter: blur(6px);
+      border-bottom: 1px solid var(--reuna);
+      z-index: 10;
+    }
+    .nav{
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .logo{
+      font-family: Poppins, Inter, sans-serif;
+      font-weight: 600;
+      font-size: 20px;
+      color: var(--korostus);
+    }
+    nav ul{
+      list-style: none;
+      margin: 0; padding: 0;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    nav a{
+      display: inline-block;
+      padding: 8px 12px;
+      border: 1px solid var(--reuna);
+      border-radius: 10px;
+      text-decoration: none;
+      color: var(--teksti);
+      font-size: 14px;
+      transition: transform 0.08s ease, background 0.2s ease, border-color 0.2s ease;
+      background: white;
+    }
+    nav a:hover{
+      border-color: var(--korostus);
+      background: #f8f5ff;
+      transform: translateY(-1px);
+    }
+
+    main{
+      max-width: 1000px;
+      margin: 24px auto;
+      padding: 0 16px;
+      background: var(--kortti);
+      border-radius: 12px;
+      border: 1px solid var(--reuna);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    }
+
+    #vastaus img{
+      max-width: 300px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+
+    footer{
+      max-width: 1000px;
+      margin: 20px auto 40px;
+      padding: 8px 16px;
+      color: #475569;
+      font-size: 14px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="nav">
+      <div class="logo">JSON Tehtävä</div>
+      <nav aria-label="Päävalikko">
+        <ul>
+          <li><a href="index.html">Etusivu (Tehtävä 1 OSA I)</a></li>
+          <li><a href="#">Tehtävä 1 OSA II</a></li>
+          <li><a href="#">Poke haku (Tehtävä 2 OSA I)</a></li>
+          <li><a href="#">Tehtävä 2 Osa II</a></li>
+          <li><a href="#">Tehtävä 3</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <div id="vastaus">
+      <p>Ladataan JSON-tietoja...</p>
+    </div>
+  </main>
+
+  <footer>
+    <small>© 2025 JSON-harjoitukset.</small>
+  </footer>
+
+  <script>
+    // Haetaan JSON-tiedosto ja muunnetaan se JS-olioksi
+    fetch('tietue.JSON')
+
+      // Muunnetaan vastaus JSON-tietue JS Olio muotoon
+      .then(function (response) {
+          return response.json();
+      })
+
+      // Käsitellään muunnettu vastaus ja välitetään se funktiolle kerro()
+      .then(function (responseJson) {
+          kerro(responseJson);
+      })
+
+      // Jos tuli jokin virhe
+      .catch(function (error) {
+          document.getElementById("vastaus").innerHTML = "<p>Tietoa ei pystytä hakemaan</p>";
+      });
+
+    // Funktio, joka hakee tiedon objektista ja kirjoittaa ne sivulle
+    function kerro(obj) {
+        let tiedot = "<h1>" + obj.otsikko + "</h1><br>"
+            + obj.kuvaus + "<br><hr>"
+            // kuvan määrittely
+            + "<p><img src='" + obj.kuva + "'></p>"
+            // keskitetään teksti
+            + "<center><h3>Opintojakso</h3>"
+            + "Nimi: " + obj.opintojakso.nimi + "<br>"
+            + "Tunnus: " + obj.opintojakso.tunnus + "<br>"
+            + "Opintopisteet: " + obj.opintojakso.opintopisteet + "<br></center>";
+
+        // Lisätään väliotsikko
+        tiedot += "<p><h3> Aiheet </h3>";
+
+        // for-silmukka, joka luo linkit sivulle
+        for (var i = 0; i < obj.tekniikat.length; i++) {
+            tiedot += "<b>Aihe: " + obj.tekniikat[i].aihe + "</b> ";
+            tiedot += "<a href='" + obj.tekniikat[i].linkki + "' target='_blank'>" + obj.tekniikat[i].linkki + "</a><br>";
+        }
+        tiedot += "</p>";
+
+        document.getElementById("vastaus").innerHTML = tiedot;
+    }
+  </script>
+</body>
+</html>
