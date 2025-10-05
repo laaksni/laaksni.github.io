@@ -1,0 +1,247 @@
+<!doctype html>
+<html lang="fi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>JSON Tehtävä — Poke haku (Tehtävä 2 OSA I)</title>
+
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --tausta: #f5f7ff;
+      --teksti: #0f172a;
+      --korostus: #7c3aed;
+      --korostus-2: #06b6d4;
+      --kortti: #ffffff;
+      --reuna: #e5e7eb;
+    }
+
+    * { box-sizing: border-box; }
+    body{
+      margin: 0;
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      background: var(--tausta);
+      color: var(--teksti);
+      line-height: 1.6;
+    }
+
+    header{
+      position: sticky;
+      top: 0;
+      background: #ffffffcc;
+      backdrop-filter: blur(6px);
+      border-bottom: 1px solid var(--reuna);
+      z-index: 10;
+    }
+    .nav{
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .logo{
+      font-family: Poppins, Inter, sans-serif;
+      font-weight: 600;
+      font-size: 20px;
+      color: var(--korostus);
+    }
+    nav ul{
+      list-style: none;
+      margin: 0; padding: 0;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    nav a{
+      display: inline-block;
+      padding: 8px 12px;
+      border: 1px solid var(--reuna);
+      border-radius: 10px;
+      text-decoration: none;
+      color: var(--teksti);
+      font-size: 14px;
+      transition: transform 0.08s ease, background 0.2s ease, border-color 0.2s ease;
+      background: white;
+    }
+    nav a:hover{
+      border-color: var(--korostus);
+      background: #f8f5ff;
+      transform: translateY(-1px);
+    }
+
+    main{
+      max-width: 1000px;
+      margin: 24px auto;
+      padding: 0 16px 16px;
+      background: var(--kortti);
+      border-radius: 12px;
+      border: 1px solid var(--reuna);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    }
+
+    #kuva2 img{
+      display:block;
+      margin:12px auto;
+      image-rendering: pixelated;
+      max-width:300px;
+    }
+    #kaanna-alue{
+      text-align:center;
+      margin: 8px 0 4px;
+    }
+    #kaanna-alue button{
+      padding:8px 12px;
+      border-radius:10px;
+      border:1px solid var(--korostus);
+      background:var(--korostus);
+      color:#fff;
+      cursor:pointer;
+    }
+    #ominaisuudet{
+      text-align:center;
+      margin-top:8px;
+    }
+
+    footer{
+      max-width: 1000px;
+      margin: 20px auto 40px;
+      padding: 8px 16px;
+      color: #475569;
+      font-size: 14px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="nav">
+      <div class="logo">JSON Tehtävä</div>
+      <nav aria-label="Päävalikko">
+        <ul>
+          <li><a href="index.html">Etusivu (Tehtävä 1 OSA I)</a></li>
+          <li><a href="toteutus.html">Tehtävä 1 OSA II</a></li>
+          <li><a href="pokehaku.html">Poke haku (Tehtävä 2 OSA I)</a></li>
+          <li><a href="#">Tehtävä 2 Osa II</a></li>
+          <li><a href="#">Tehtävä 3</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <h1 style="padding-top:16px;">Pokemon haku</h1>
+    <p>
+      <input type="text" id="pokemonName" placeholder="Enter Pokemon name">
+      <button onclick="poke()">Hae</button><br>
+    </p>
+
+    <div id="nimi">Kirjoita laatikkoon Pokemonin nimi</div>
+    <!-- UUSI: alue käännä-painikkeelle -->
+    <div id="kaanna-alue"></div>
+
+    <p id="kuva2"></p>
+    <!-- UUSI: 3 ominaisuutta tänne -->
+    <div id="ominaisuudet"></div>
+
+    <div id="vastaus" style="color:#b91c1c;"></div>
+  </main>
+
+  <footer>
+    <small>© 2025 JSON-harjoitukset.</small>
+  </footer>
+
+  <script>
+    // pidetään viimeisimmän haun nimi tallessa, jotta kaanna() voi hakea back-kuvan
+    var viimeisinNimi = '';
+
+    // Enter painaminen suorittaa haun
+    document.getElementById('pokemonName').addEventListener('keydown', function(e){
+      if(e.key === 'Enter'){ poke(); }
+    });
+
+    function poke() {
+      const pokeName = document.getElementById("pokemonName").value.toLowerCase();
+      let name = document.getElementById("pokemonName").value;
+
+      document.getElementById("vastaus").innerHTML = "";
+      document.getElementById("kuva2").innerHTML = "<em>Haetaan...</em>";
+      document.getElementById("kaanna-alue").innerHTML = "";
+      document.getElementById("ominaisuudet").innerHTML = "";
+
+      fetch(`https://pokeapi.co/api/v2/pokemon/${pokeName}`)
+        .then(function (response) {
+          if(!response.ok) throw new Error("Ei löytynyt");
+          return response.json();
+        })
+        .then(function (responseJson) {
+          pokekuva(responseJson, name);
+        })
+        .catch(function () {
+          document.getElementById("vastaus").innerHTML = "<p>Tietoa ei pystytä hakemaan</p>";
+          document.getElementById("kuva2").innerHTML = "";
+        });
+    }
+
+    // Näyttää etukuvan + lisää Käännä-painikkeen + 3 ominaisuutta; tyhjentää hakukentän
+    function pokekuva(obj, nameInput) {
+      var nameShown = nameInput || obj.name;
+      var frontUrl = obj.sprites.front_default;
+
+      // kuva ja nimi
+      document.getElementById("kuva2").innerHTML = "<img src='" + frontUrl + "' alt='" + nameShown + "'>";
+      document.getElementById("nimi").innerHTML = "<b>" + nameShown + "</b>";
+
+      // TALLENNA viimeisin nimi, jotta kaanna() voi hakea back-kuvan
+      viimeisinNimi = obj.name;
+
+      // LISÄÄ "Käännä" -painike määriteltyyn alueeseen
+      document.getElementById("kaanna-alue").innerHTML =
+        "<button onclick='kaanna()'>Käännä</button>";
+
+      // 3 ominaisuutta: Tyypit, Pituus, Paino
+      var tyypit = (obj.types || []).map(function(t){ return t.type.name; }).join(", ");
+      var pituus = (obj.height/10).toFixed(1) + " m";
+      var paino  = (obj.weight/10).toFixed(1) + " kg";
+
+      var omi = "";
+      omi += "<p><b>Tyypit:</b> " + tyypit + "</p>";
+      omi += "<p><b>Pituus:</b> " + pituus + "</p>";
+      omi += "<p><b>Paino:</b> "  + paino  + "</p>";
+      document.getElementById("ominaisuudet").innerHTML = omi;
+
+      // tyhjennä hakulaatikko
+      document.getElementById("pokemonName").value = "";
+    }
+
+    // Hakee selkäkuvan ja korvaa kuvapaikalla olevan kuvan (kutsutaan Käännä-painikkeesta)
+    function kaanna(){
+      if(!viimeisinNimi){
+        document.getElementById("vastaus").textContent = "Hae ensin jokin Pokemon.";
+        return;
+      }
+      document.getElementById("vastaus").textContent = "";
+      document.getElementById("kuva2").innerHTML = "<em>Käännetään...</em>";
+
+      fetch(`https://pokeapi.co/api/v2/pokemon/${viimeisinNimi}`)
+        .then(function (response) { return response.json(); })
+        .then(function (data) {
+          var backUrl = data.sprites && data.sprites.back_default;
+          if(backUrl){
+            document.getElementById("kuva2").innerHTML = "<img src='" + backUrl + "' alt='" + viimeisinNimi + " selin'>";
+          } else {
+            document.getElementById("kuva2").innerHTML = "<em>Tälle Pokémonille ei ole selkäkuvaa.</em>";
+          }
+        })
+        .catch(function (){
+          document.getElementById("vastaus").textContent = "Kääntö epäonnistui.";
+          document.getElementById("kuva2").innerHTML = "";
+        });
+    }
+  </script>
+</body>
+</html>
